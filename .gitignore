@@ -1,0 +1,12 @@
+# Files #
+*.log
+*.pot
+*.pyc
+*.pyc
+.DS_Store
+
+# Folders #
+__pycache__/
+logs/
+project/project/__pycache__/
+project/movies/__pycache__/
