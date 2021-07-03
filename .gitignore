@@ -10,3 +10,4 @@ __pycache__/
 logs/
 project/project/__pycache__/
 project/movies/__pycache__/
+.idea/

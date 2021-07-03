@@ -1,6 +1,7 @@
-import datetime
 from django.db import models
 from datetime import date
+from django.urls import reverse
+
 
 # Create your models here.
 class Category(models.Model):
@@ -10,6 +11,7 @@ class Category(models.Model):
     url = models.SlugField(max_length=160, unique=True)
 
     """ Возвращает строковое представление модели """
+
     def __str__(self):
         return self.name
 
@@ -17,12 +19,26 @@ class Category(models.Model):
         verbose_name = "Категория"
         verbose_name_plural = "Категории"
 
+
+class ActorTypes(models.Model):
+    """ Типы актеров и режисеров """
+    title = models.CharField("Название", max_length=100)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = "Типы актеров и режисеров"
+        verbose_name_plural = "Типы актеров и режисеров"
+
+
 class Actor(models.Model):
     """ Актеры и режисеры """
     name = models.CharField("Имя", max_length=100)
     age = models.PositiveSmallIntegerField("Возраст", default=0)
     description = models.TextField("Описание")
     image = models.ImageField("Изображение", upload_to="actors/")
+    actor_type = models.ForeignKey(ActorTypes, verbose_name="Тип", on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
@@ -30,6 +46,7 @@ class Actor(models.Model):
     class Meta:
         verbose_name = "Актеры и режисеры"
         verbose_name_plural = "Актеры и режисеры"
+
 
 class Genre(models.Model):
     """ Жанры """
@@ -44,6 +61,7 @@ class Genre(models.Model):
         verbose_name = "Жанр"
         verbose_name_plural = "Жанры"
 
+
 class Movie(models.Model):
     title = models.CharField("Название", max_length=100)
     tagline = models.CharField("Слоган", max_length=100, default='')
@@ -53,7 +71,7 @@ class Movie(models.Model):
     country = models.CharField("Страна", max_length=30)
     directors = models.ManyToManyField(Actor, verbose_name="режисcер", related_name="film_director")
     actors = models.ManyToManyField(Actor, verbose_name="актеры", related_name="film_actor")
-    ganre = models.ManyToManyField(Genre, verbose_name="жанры")
+    genres = models.ManyToManyField(Genre, verbose_name="жанры")
     world_premiere = models.DateField("Премьера в мире", default=date.today)
     budget = models.PositiveIntegerField("Бюджет", default=0, help_text="укажите сумму в $")
     fees_in_usa = models.PositiveIntegerField("Сборы в США", default=0, help_text="укажите сумму в $")
@@ -65,9 +83,13 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('movie_detail', kwargs={"slug": self.url})
+
     class Meta:
         verbose_name = "Фильм"
         verbose_name_plural = "Фильмы"
+
 
 class MovieShots(models.Model):
     """Кадры из фильма"""
@@ -83,6 +105,7 @@ class MovieShots(models.Model):
         verbose_name = "Кадр из фильма"
         verbose_name_plural = "Кадры из фильма"
 
+
 class RatingStar(models.Model):
     """Звезда рейтинга"""
     value = models.SmallIntegerField("Значение", default=0)
@@ -93,6 +116,7 @@ class RatingStar(models.Model):
     class Meta:
         verbose_name = "Звезда рейтинга"
         verbose_name_plural = "Звезды рейтинга"
+
 
 class Rating(models.Model):
     """Рейтинг"""
@@ -106,6 +130,7 @@ class Rating(models.Model):
     class Meta:
         verbose_name = "Рейтинг"
         verbose_name_plural = "Рейтинги"
+
 
 class Reviews(models.Model):
     """Отзывы"""
