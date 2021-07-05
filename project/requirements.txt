@@ -2,3 +2,4 @@ Django
 gevent
 gunicorn
 Pillow
+sorl-thumbnail
