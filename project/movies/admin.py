@@ -1,6 +1,18 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django import forms
+
 from .models import Category, Genre, Movie, MovieShots, Actor, ActorTypes, Rating, RatingStar, Reviews
+
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
+
+
+class MovieAdminForm(forms.ModelForm):
+    description = forms.CharField(label="Описание", widget=CKEditorUploadingWidget())
+
+    class Meta:
+        model = Movie
+        fields = '__all__'
 
 
 # Register your models here.
@@ -40,6 +52,7 @@ class MovieAdmin(admin.ModelAdmin):
     save_as = True
     readonly_fields = ("get_poster", )
     list_editable = ("draft", )
+    form = MovieAdminForm
     # fields = (("actors", "directors", "genres"), )
     fieldsets = (
         ("Общее", {
