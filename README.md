@@ -1,3 +1,10 @@
+# ВНИМАНИЕ! 
+
+Это просто обучающий проект по урокам: https://www.youtube.com/playlist?list=PLF-NY6ldwAWrb6nQcPL21XX_-AmivFAYq
+
+
+
+
 ### Инфо
 Чистый python проект с docker + django + nginx + gunicorn + postgresql
 
